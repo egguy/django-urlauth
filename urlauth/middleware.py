@@ -21,6 +21,8 @@ class AuthKeyMiddleware(object):
     def process_request(self, request):
         key = request.REQUEST.get(getattr(settings, "URLAUTH_AUTHKEY_NAME", URLAUTH_AUTHKEY_NAME))
         user = None
+        if key is None:
+            return
         try:
             key = load_key(key)
             if key.uid:
