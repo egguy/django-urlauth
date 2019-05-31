@@ -1,0 +1,9 @@
+==============
+django-urlauth
+==============
+
+This django application allows you to build special link. When somebody goes via that link to your site he will be automatically authenticated. THis is acheaved with special GET argumetns which is appended to the link. Such link are usually used in the emails.
+
+Example of such link: http://domain.com/profile/edit/?authkey=SOME_HASH
+
+For installation insctructions see the file "INSTALL". Full documentation is available in the file "index.rst" in the "docs/" directory.

@@ -1,0 +1,9 @@
+syntax:glob
+*.pyc
+*.swp
+update.sh
+django_urlauth.egg-info/
+dist/
+docs/_build
+demo/var/db
+build
