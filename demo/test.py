@@ -20,18 +20,18 @@ def reproduce():
     call_command('syncdb', interactive=False)
     call_command('flush', interactive=False)
 
-    print 'Creating users'
-    for x in xrange(100):
+    print('Creating users')
+    for x in range(100):
         username = 'test%d' % x
         User.objects.create_user(username, '%s@gmail.com' % username, username)
 
     users = User.objects.all()
 
-    print 'Creating auth keys'
+    print('Creating auth keys')
     for user in users:
         obj = AuthKey.objects.wrap_url('/', uid=user.pk)
 
-    print 'Key count: %d' % AuthKey.objects.count()
+    print('Key count: %d' % AuthKey.objects.count())
 
 
 if __name__ == '__main__':

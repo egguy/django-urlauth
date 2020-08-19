@@ -1,11 +1,13 @@
+from builtins import range
 from datetime import datetime, timedelta
 import cgi
 
+from django.conf.urls import url
 from django.test import TestCase
-from django.conf.urls.defaults import *
 from django.http import HttpResponse
 from django.conf import settings
 from urlauth.settings import URLAUTH_AUTHKEY_NAME
+
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -17,13 +19,10 @@ from urlauth.models import AuthKey
 from urlauth.signals import authkey_processed
 
 
-
-
-
 class UrlauthTestCase(TestCase):
     urls = 'urlauth.tests'
     test_url = '/urlauth_test_view/'
-    
+
     # Helpers
     def setUp(self):
         """
@@ -89,7 +88,7 @@ class UrlauthTestCase(TestCase):
         url = AuthKey.objects.wrap_url(clean_url, uid=self.user.pk, expired=expired)
         key = AuthKey.objects.get()
         self.assertEqual(url, 'http://ya.ru?foo=bar&%s=%s#hash' % (URLAUTH_AUTHKEY_NAME,
-                                                           key.id))
+                                                                   key.id))
 
     def test_validate_key(self):
         "Test the validate_key function"
@@ -155,7 +154,7 @@ class UrlauthTestCase(TestCase):
     def test_bulk(self):
         User.objects.all().delete()
         AuthKey.objects.all().delete()
-        for x in xrange(100):
+        for x in range(100):
             username = 'test%d' % x
             User.objects.create_user(username, '%s@gmail.com' % username, username)
         users = User.objects.all()
@@ -167,6 +166,7 @@ class UrlauthTestCase(TestCase):
 def test_view(request):
     return HttpResponse('')
 
-urlpatterns = patterns('',
-    url('urlauth_test_view/', test_view, name='urlauth_test_view'),
-)
+
+urlpatterns = [
+                       url('urlauth_test_view/', test_view, name='urlauth_test_view'),
+               ]

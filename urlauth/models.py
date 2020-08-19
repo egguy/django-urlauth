@@ -1,3 +1,4 @@
+from builtins import range
 from urlauth.settings import URLAUTH_AUTHKEY_NAME, URLAUTH_AUTHKEY_TIMEOUT
 import os
 from binascii import hexlify
@@ -49,7 +50,7 @@ class AuthKeyManager(models.Manager):
         key.data = json.dumps(kwargs)
 
         # Try 10 times to create AuthKey instance with unique PK
-        for x in xrange(10):
+        for x in range(10):
             key.pk = uuid4()  # Use a unique identifier
             try:
                 key.save(force_insert=True)

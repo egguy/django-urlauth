@@ -1,3 +1,4 @@
+from __future__ import print_function
 from datetime import datetime
 
 from django.core.management.base import BaseCommand
@@ -50,4 +51,4 @@ class Command(BaseCommand):
         # and there can be a *LOT* of AuthKey's
         truncate_queryset(qs)
 
-        print '%d keys deleted' % count
+        print('%d keys deleted' % count)

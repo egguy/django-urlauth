@@ -1,8 +1,10 @@
+from future import standard_library
+standard_library.install_aliases()
 import os
 from datetime import datetime
 import time
 from base64 import b64encode, b64decode
-from urllib import urlencode
+from urllib.parse import urlencode
 from cgi import parse_qs
 import logging
 
