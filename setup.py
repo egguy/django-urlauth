@@ -25,4 +25,7 @@ setup(
         'Programming Language :: Python',
         'Topic :: Utilities'
     ],
+    install_requires=[
+        "future"
+    ]
 )
