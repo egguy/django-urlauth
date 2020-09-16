@@ -1,0 +1,8 @@
+__pycache__/
+.hg/
+*.pyc
+*.pyo
+venv/
+.idea/
+django_urlauth.egg-info/
+django_urlauth_egguy.egg-info/
