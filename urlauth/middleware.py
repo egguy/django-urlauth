@@ -38,7 +38,7 @@ class AuthKeyMiddleware(object):
 
         if user and user.is_active:
             user.backend = 'django.contrib.auth.backends.ModelBackend'
-            auth.login(request, user)    
+            auth.login(request, user)
 
         if key.onetime:
             key.delete()

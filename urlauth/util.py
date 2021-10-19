@@ -14,7 +14,7 @@ def wrap_url(url, **kwargs):
     """
     Create new authorization key and append it to the url.
     """
-    
+
     logging.error('urlauth.util.wrap_url is deprecated. Use AuthKey.objects.wrap_url instead.')
     return AuthKey.objects.wrap_url(url, **kwargs)
 
