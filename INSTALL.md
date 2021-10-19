@@ -1,11 +1,8 @@
-==============================
-Installation of django-urlauth
-==============================
+# Installation of django-urlauth
 
-pip install django-urlauth
+`pip install django-urlauth`
 
-configuration
-=============
+##  configuration
 
 * Add `urlauth` to INSTALLED_APPS
 * Put `urlauth.middleware.AuthKeyMiddleware' into MIDDLEWARES (between SessionMiddleware and AuthenticationMiddleware)

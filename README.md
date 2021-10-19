@@ -1,6 +1,6 @@
-==============
-django-urlauth
-==============
+
+# django-urlauth
+
 
 This django application allows you to build special link. When somebody goes via that link to your site he will be automatically authenticated. THis is acheaved with special GET argumetns which is appended to the link. Such link are usually used in the emails.
 

@@ -5,7 +5,7 @@ setup(
     name='django-urlauth-egguy',
     version='0.2.0',
     description='Django application for user authentication with key in hypertext link',
-    url='http://bitbucket.org/lorien/django-urlauth/',
+    url='https://github.com/egguy/django-urlauth/',
     author='Grigoriy Petukhov',
     author_email='lorien@lorien.name',
 
