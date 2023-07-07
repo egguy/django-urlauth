@@ -1,6 +1,6 @@
 # Installation of django-urlauth
 
-`pip install django-urlauth`
+`pip install django-urlauth-egguy`
 
 ##  configuration
 
