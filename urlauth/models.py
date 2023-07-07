@@ -1,26 +1,13 @@
-from builtins import range
-from urlauth.settings import URLAUTH_AUTHKEY_NAME, URLAUTH_AUTHKEY_TIMEOUT
-import os
-from binascii import hexlify
+import json
 from datetime import datetime, timedelta
-
-try:
-    from django.contrib.auth import get_user_model
-    #User = get_user_model()
-    get_user = lambda: get_user_model()
-except ImportError:
-    from django.contrib.auth.models import User
-    get_user = lambda: User
-
-from django.db import models
-from django.conf import settings
-try:
-    # load simple json compat from django
-    from django.utils import simplejson as json
-except ImportError:
-    import json
-from django.db.utils import IntegrityError
 from uuid import uuid4
+
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.db import models
+from django.db.utils import IntegrityError
+
+from urlauth.settings import URLAUTH_AUTHKEY_NAME, URLAUTH_AUTHKEY_TIMEOUT
 
 
 class URLAuthError(Exception):
@@ -28,7 +15,6 @@ class URLAuthError(Exception):
 
 
 class AuthKeyManager(models.Manager):
-
     def create_key(self, uid, expired=None, onetime=True, **kwargs):
         """
         Create AuthKey object and return its ID.
@@ -44,13 +30,17 @@ class AuthKeyManager(models.Manager):
         if expired:
             key.expired = expired
         else:
-            key.expired = datetime.now() + timedelta(seconds=getattr(settings, "URLAUTH_AUTHKEY_TIMEOUT", URLAUTH_AUTHKEY_TIMEOUT))
+            key.expired = datetime.now() + timedelta(
+                seconds=getattr(
+                    settings, "URLAUTH_AUTHKEY_TIMEOUT", URLAUTH_AUTHKEY_TIMEOUT
+                )
+            )
 
         key.onetime = onetime
         key.data = json.dumps(kwargs)
 
         # Try 10 times to create AuthKey instance with unique PK
-        for x in range(10):
+        for _ in range(10):
             key.pk = uuid4()  # Use a unique identifier
             try:
                 key.save(force_insert=True)
@@ -60,7 +50,7 @@ class AuthKeyManager(models.Manager):
                 break
 
         if not key.pk:
-            raise URLAuthError('Could not create unique key')
+            raise URLAuthError("Could not create unique key")
 
         return key.id
 
@@ -74,14 +64,20 @@ class AuthKeyManager(models.Manager):
         """
 
         key_id = self.create_key(uid, **kwargs)
-        clue = '?' in url and '&' or '?'
-        parts = url.rsplit('#', 1)
+        clue = "?" in url and "&" or "?"
+        parts = url.rsplit("#", 1)
         if len(parts) > 1:
             url, hash = parts
-            hash = '#%s' % hash
+            hash = "#%s" % hash
         else:
-            hash = ''
-        url = '%s%s%s=%s%s' % (url, clue, getattr(settings, "URLAUTH_AUTHKEY_NAME", URLAUTH_AUTHKEY_NAME), key_id, hash)
+            hash = ""
+        url = "{}{}{}={}{}".format(
+            url,
+            clue,
+            getattr(settings, "URLAUTH_AUTHKEY_NAME", URLAUTH_AUTHKEY_NAME),
+            key_id,
+            hash,
+        )
         return url
 
 
@@ -95,8 +91,8 @@ class AuthKey(models.Model):
 
     objects = AuthKeyManager()
 
-    def __unicode__(self):
-        return 'AuthKey #%s' % self.id
+    def __str__(self):
+        return "AuthKey #%s" % self.id
 
     @property
     def extra(self):
@@ -104,6 +100,6 @@ class AuthKey(models.Model):
 
     def get_user(self):
         if self.uid:
-            return get_user().objects.get(pk=self.uid)
+            return get_user_model().objects.get(pk=self.uid)
         else:
             return None

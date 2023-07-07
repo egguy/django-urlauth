@@ -1,7 +1,5 @@
-from future import standard_library
-standard_library.install_aliases()
-from datetime import datetime
 import logging
+from datetime import datetime
 
 from urlauth.models import AuthKey
 
@@ -12,10 +10,12 @@ class InvalidKey(Exception):
 
 def wrap_url(url, **kwargs):
     """
-    Create new authorization key and append it to the url.
+    Create a new authorization key and append it to the url.
     """
 
-    logging.error('urlauth.util.wrap_url is deprecated. Use AuthKey.objects.wrap_url instead.')
+    logging.error(
+        "urlauth.util.wrap_url is deprecated. Use AuthKey.objects.wrap_url instead."
+    )
     return AuthKey.objects.wrap_url(url, **kwargs)
 
 
@@ -27,7 +27,7 @@ def load_key(hash):
     try:
         key = AuthKey.objects.get(pk=hash)
     except AuthKey.DoesNotExist:
-        raise InvalidKey('Key does not exist')
+        raise InvalidKey("Key does not exist")
     if datetime.now() > key.expired:
-        raise InvalidKey('Key is expired')
+        raise InvalidKey("Key is expired")
     return key

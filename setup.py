@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-urlauth-egguy',
-    version='0.2.0',
+    version='0.2.2',
     description='Django application for user authentication with key in hypertext link',
     url='https://github.com/egguy/django-urlauth/',
     author='Grigoriy Petukhov',
@@ -26,6 +26,6 @@ setup(
         'Topic :: Utilities'
     ],
     install_requires=[
-        "future"
+        "django>=1.11",
     ]
 )

@@ -6,22 +6,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='AuthKey',
+            name="AuthKey",
             fields=[
-                ('id', models.CharField(max_length=40, primary_key=True, serialize=False)),
-                ('uid', models.PositiveIntegerField(null=True)),
-                ('expired', models.DateTimeField()),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('onetime', models.BooleanField(default=True)),
-                ('data', models.TextField()),
+                (
+                    "id",
+                    models.CharField(max_length=40, primary_key=True, serialize=False),
+                ),
+                ("uid", models.PositiveIntegerField(null=True)),
+                ("expired", models.DateTimeField()),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("onetime", models.BooleanField(default=True)),
+                ("data", models.TextField()),
             ],
         ),
     ]

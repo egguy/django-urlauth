@@ -1,4 +1,3 @@
-from __future__ import print_function
 from datetime import datetime
 
 from django.core.management.base import BaseCommand
@@ -6,6 +5,7 @@ from django.db import transaction
 from django.db.models.sql.subqueries import DeleteQuery
 
 from urlauth.models import AuthKey
+
 
 def truncate_queryset(qs):
     """
@@ -38,10 +38,8 @@ def truncate_queryset(qs):
             transaction.leave_transaction_management(using=qs.db)
 
 
-
-
 class Command(BaseCommand):
-    help = 'Remove expired keys from database'
+    help = "Remove expired keys from database"
 
     def handle(self, *args, **kwargs):
         qs = AuthKey.objects.filter(expired__lt=datetime.now())
@@ -51,4 +49,4 @@ class Command(BaseCommand):
         # and there can be a *LOT* of AuthKey's
         truncate_queryset(qs)
 
-        print('%d keys deleted' % count)
+        print("%d keys deleted" % count)
