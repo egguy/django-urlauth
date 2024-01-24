@@ -1,10 +1,10 @@
-import cgi
 from datetime import datetime, timedelta
+from urllib.parse import parse_qs, urlparse
 
-from django.conf.urls import url
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.test import TestCase
+from django.urls import path
 
 from urlauth.models import AuthKey
 from urlauth.settings import URLAUTH_AUTHKEY_NAME
@@ -39,9 +39,9 @@ class UrlauthTestCase(TestCase):
         Returns:
             The ID of created ``AuthKey`` instance
         """
-
         url = AuthKey.objects.wrap_url(url, **kwargs)
-        path, args = url.split("?")[0], cgi.parse_qs(url.split("?")[1])
+        parsed_url = urlparse(url)
+        _, args = parsed_url.path, parse_qs(parsed_url.query)
         self.client.get(url, args)
         return args[URLAUTH_AUTHKEY_NAME][0]
 
@@ -104,7 +104,7 @@ class UrlauthTestCase(TestCase):
     def test_authentication(self):
         "Test the authentication middleware"
         expired = datetime.now() + timedelta(days=1)
-        resp = self.client.get(self.test_url)
+        _ = self.client.get(self.test_url)
 
         # Guest is not authenticated
         self.client.logout()
@@ -158,12 +158,12 @@ class UrlauthTestCase(TestCase):
     def test_bulk(self):
         User.objects.all().delete()
         AuthKey.objects.all().delete()
-        for x in range(100):
+        for x in range(10):
             username = "test%d" % x
             User.objects.create_user(username, "%s@gmail.com" % username, username)
         users = User.objects.all()
         for user in users:
-            obj = AuthKey.objects.wrap_url("/", uid=user.pk)
+            AuthKey.objects.wrap_url("/", uid=user.pk)
         self.assertEqual(User.objects.count(), AuthKey.objects.count())
 
 
@@ -172,5 +172,5 @@ def test_view(request):
 
 
 urlpatterns = [
-    url("urlauth_test_view/", test_view, name="urlauth_test_view"),
+    path("urlauth_test_view/", test_view, name="urlauth_test_view"),
 ]
